@@ -32,6 +32,7 @@ class TestRawData(unittest.TestCase):
         self.assertEqual(data, expected)
 
     def test_translate_text_dir(self):
+        shutil.rmtree('./test_dummy_dir')
         os.mkdir('./test_dummy_dir')
         file = open("./test_dummy_dir/dummy_file.txt", 'w')
         file.write(" Ram \n")
