@@ -76,7 +76,7 @@ def batch_translate_file(input_path,
     gets translated and gets copied back
     """
 
-    move_cmd = "gsutil -m cp {0} {1}".format(input_path,
+    move_cmd = "gcloud storage cp {0} {1}".format(input_path,
                                              gcs_bucket + '/' + input_path)
     logging.info(move_cmd)
     os.system(move_cmd)
@@ -84,12 +84,12 @@ def batch_translate_file(input_path,
     batch_translate_text(gcs_bucket + '/' + input_path,
                          gcs_bucket + '/intermediate/', project_id)
 
-    copy_back_cmd = "gsutil -m cp -r {0} {1}".format(gcs_bucket + '/intermediate/*.' \
+    copy_back_cmd = "gcloud storage cp --recursive {0} {1}".format(gcs_bucket + '/intermediate/*.' \
                     + input_path.split('.')[1] + '/', output_file)
     logging.info("[EXECUTING] {0}".format(copy_back_cmd))
     os.system(copy_back_cmd)
 
-    remove_intermediate_cmd = "gsutil -m rm -rf {0}".format(gcs_bucket +
+    remove_intermediate_cmd = "gcloud storage rm --recursive --continue-on-error {0}".format(gcs_bucket +
                                                             '/intermediate')
     logging.info("[EXECUTING] {0}".format(remove_intermediate_cmd))
     os.system(remove_intermediate_cmd)
